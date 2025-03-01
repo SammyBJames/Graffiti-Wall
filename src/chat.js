@@ -1,35 +1,23 @@
+import { messages, user } from './firebase';
+import { query, orderBy, limit, serverTimestamp, onSnapshot, addDoc } from 'firebase/firestore';
+import { uniqueNamesGenerator, adjectives, names } from 'unique-names-generator';
 import './styles/chat.css';
-import {
-    messages,
-    user
-} from './firebase';
-import {
-    onSnapshot,
-    query,
-    orderBy,
-    limit,
-    addDoc,
-    serverTimestamp
-} from 'firebase/firestore';
-import {
-    uniqueNamesGenerator,
-    adjectives,
-    names
-} from 'unique-names-generator';
+
+const chat = document.getElementById('chat');
+const messageBox = document.getElementById('message');
+const sendButton = document.getElementById('send-button');
+let initialLoad = true;
 
 function getUsername(uid) {
-  const config = {
+  return uniqueNamesGenerator({
     dictionaries: [adjectives, names],
     separator: '',
     style: 'capital',
     seed: uid
-  };
-
-  return uniqueNamesGenerator(config);
+  });
 }
 
 function formatTimestamp(timestamp) {
-    const date = timestamp.toDate();
     const options = {
       year: 'numeric',
       month: 'short',
@@ -39,16 +27,51 @@ function formatTimestamp(timestamp) {
       hour12: true
     };
     const formatter = new Intl.DateTimeFormat('en-US', options);
-    return formatter.format(date);
+    return formatter.format(timestamp.toDate());
 }
 
-const chat = document.getElementById('chat');
-let initialLoad = true;
+function fail(msg) {
+    alert(msg);
+    sendButton.disabled = false;
+}
+
+function sendMessage() {
+    sendButton.disabled = true;
+    const message = messageBox.value.trim();
+
+    if (message.length == 0) {
+        fail('Please enter a message.');
+        return;
+    }
+    if (message.length > 2000) {
+        fail('Message is too long. The limit is 2,000 characters.');
+        return;
+    }
+    if (!user) {
+        fail('Something went wrong. Reload the page and try again.');
+        return;
+    }
+
+    addDoc(messages, {
+        message: message,
+        user: user.uid,
+        timestamp: serverTimestamp()
+    }).then(response => {
+        document.getElementById('message').value = '';
+        sendButton.disabled = false;
+    }).catch(error => {
+        fail('Something went wrong. Reload the page and try again.');
+    });
+}
+
+sendButton.addEventListener('click', sendMessage);
+messageBox.addEventListener('keydown', e => e.key === 'Enter' ? sendMessage() : null);
 
 const q = query(messages, orderBy('timestamp', 'desc'), limit(100));
 onSnapshot(q, snapshot => {
     snapshot.forEach((doc) => {
         if (document.querySelector(`[data-id='${doc.id}']`)) return;
+        
         const message = doc.data();
 
         const msg = document.createElement('div');
@@ -79,42 +102,4 @@ onSnapshot(q, snapshot => {
     });
     chat.scrollTop = chat.scrollHeight;
     initialLoad = false;
-});
-
-const sendButton = document.getElementById('send-button');
-const messageBox = document.getElementById('message');
-
-sendButton.addEventListener('click', () => {
-    sendButton.disabled = true;
-    const message = messageBox.value.trim();
-    if (message.length == 0) {
-        alert('Please enter a message.');
-        sendButton.disabled = false;
-        return;
-    }
-    if (message.length > 2000) {
-        alert('Message is too long. The limit is 2,000 characters.');
-        sendButton.disabled = false;
-        return;
-    }
-    if (!user) {
-        alert('Something went wrong. Reload the page and try again.');
-        sendButton.disabled = false;
-        return;
-    }
-    addDoc(messages, {
-        message: message,
-        user: user.uid,
-        timestamp: serverTimestamp()
-    }).then(response => {
-        document.getElementById('message').value = '';
-        sendButton.disabled = false;
-    }).catch(error => {
-        sendButton.disabled = false;
-    });
-});
-
-messageBox.addEventListener('keydown', (event) => {
-    console.log(event.key);
-    if (event.key === 'Enter') sendButton.click();
 });

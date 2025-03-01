@@ -1,14 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import {
-    getFirestore,
-    collection,
-    doc
-} from 'firebase/firestore';
-import {
-    getAuth,
-    onAuthStateChanged,
-    signInAnonymously
-} from 'firebase/auth';
+import { getFirestore, collection, doc } from 'firebase/firestore';
+import { getAuth, onAuthStateChanged, signInAnonymously } from 'firebase/auth';
 import './styles/page.css';
 
 const firebaseConfig = {
@@ -24,11 +16,10 @@ initializeApp(firebaseConfig);
 
 const db = getFirestore();
 const auth = getAuth();
-export let user = null;
-
-export const messages = collection(db, 'messages');
-
 const entries = collection(db, 'entries');
+
+export let user = null;
+export const messages = collection(db, 'messages');
 export const wall = doc(entries, 'wall');
 
 onAuthStateChanged(auth, usr => {
