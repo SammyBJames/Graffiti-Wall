@@ -1,0 +1,49 @@
+body {
+    gap: 16px;
+}
+
+#back-button {
+    text-decoration: none;
+    width: fit-content;
+    padding: 8px;
+    margin:-8px;
+}
+
+#chat {
+    height: 100%;
+    gap: 16px;
+    overflow-y: scroll;
+}
+
+div.message-input {
+    width: 100%;
+    height: 100px;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+#message {
+    flex-grow: 1;
+    resize: none;
+    height: 80px;
+}
+
+#send-button {
+    margin-top: 4px;
+}
+
+.message {
+    gap: 8px;
+}
+
+div.message-header {
+    align-items: flex-start;
+}
+
+.timestamp {
+    font-size: 12px;
+}
+
+.message-content {
+    max-width: 98%;
+}

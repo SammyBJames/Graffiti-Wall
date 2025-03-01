@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+</head>
+<body>
+  <div class="row space-between">
+    <div class="row space-between" style="gap: 16px;">
+      <a id="back-button" href="/" class="material-icons-round">arrow_back</a>
+      <h2>Chat</h2>
+    </div>
+  </div>
+  <div id="chat" class="window">    
+  </div>
+  <div class="row message-input">
+    <textarea id="message" class="window" placeholder="Send a message..."></textarea>
+    <button id="send-button" class="primary-button row" style="gap: 8px;">
+      <span>Send</span>
+      <span class="material-icons-round" style="font-size: 20px;">send</span>
+    </button>
+  </div>
+</body>
+</html>

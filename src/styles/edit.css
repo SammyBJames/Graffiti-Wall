@@ -1,0 +1,29 @@
+body {
+    gap: 16px;
+}
+
+#back-button {
+    text-decoration: none;
+    width: fit-content;
+    padding: 8px;
+    margin:-8px;
+}
+
+#save-button {
+    text-decoration: none;
+    cursor: pointer !important;
+    padding: 8px;
+    margin-right: 8px;
+}
+
+#changes {
+    border-radius: 16px;
+    height: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    font-family: monospace;
+}
+
+textarea:read-only {
+    outline: none;
+}
