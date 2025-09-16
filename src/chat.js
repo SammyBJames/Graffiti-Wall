@@ -39,18 +39,9 @@ function sendMessage() {
     sendButton.disabled = true;
     const message = messageBox.value.trim();
 
-    if (message.length == 0) {
-        fail('Please enter a message.');
-        return;
-    }
-    if (message.length > 2000) {
-        fail('Message is too long. The limit is 2,000 characters.');
-        return;
-    }
-    if (!user) {
-        fail('Something went wrong. Reload the page and try again.');
-        return;
-    }
+    if (message.length == 0) return fail('Please enter a message.');
+    if (message.length > 2000) return fail('Message is too long. The limit is 2,000 characters.');
+    if (!user) return fail('Something went wrong. Reload the page and try again.');
 
     addDoc(messages, {
         message: message,

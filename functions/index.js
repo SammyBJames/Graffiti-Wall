@@ -16,19 +16,19 @@ exports.updateWall = onCall(async request => {
     if (!request.auth || !request.auth.uid) {
         return {
             success: false,
-            error: 'Nice try buddy. Get authenticated.'
+            error: 'Get authenticated.'
         };
     }
     if (!('contents' in request.data) || !request.data.contents.trim()) {
         return {
             success: false,
-            error: 'Nice try buddy. You need to provide some content.'
+            error: 'You need to provide some content.'
         };
     }
     if (request.data.contents.length > 10000000) {
         return {
             success: false,
-            error: 'Nice try buddy. Your content is too long.'
+            error: 'Your content is too long.'
         };
     }
     try {

@@ -7,7 +7,7 @@ const updateWall = httpsCallable(getFunctions(), 'updateWall');
 const changes = document.getElementById('changes');
 
 getDoc(wall).then(doc => {
-    changes.value = doc.data().contents
+    changes.value = doc.data().contents;
     changes.removeAttribute('readonly');
 });
 
